@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- List view for EIMS Cancel Log -->
+    <record id="view_eims_cancel_log_list" model="ir.ui.view">
+        <field name="name">eims.cancel.log.list</field>
+        <field name="model">eims.cancel.log</field>
+        <field name="arch" type="xml">
+            <list string="EIMS Cancel Log">
+                <field name="move_id"/>
+                <field name="eims_irn"/>
+                <field name="status"/>
+                <field name="eims_cancelled"/>
+                <field name="eims_cancel_date"/>
+                <field name="eims_cancel_message"/>
+            </list>
+        </field>
+
+    </record>
+     <!-- Form view for EIMS Cancel Log -->
+    <record id="view_eims_cancel_log_form" model="ir.ui.view">
+        <field name="name">eims.cancel.log.form</field>
+        <field name="model">eims.cancel.log</field>
+        <field name="arch" type="xml">
+            <form string="EIMS Registered Invoice">
+                <sheet>
+                    <group>
+                        <field name="move_id"/>
+                        <field name="eims_irn"/>
+                        <field name="status"/>
+                        <field name="eims_cancelled"/>
+                        <field name="eims_cancel_date"/>
+                        <field name="eims_cancel_message"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

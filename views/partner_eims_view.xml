@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_eims_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.eims.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="EIMS Buyer Info" name="eims_buyer_info">
+                    <group>
+                        <group>
+                            <field name="eims_tin"/>
+                            <field name="eims_id_type"/>
+                            <field name="eims_id_number"/>
+                        </group>
+                        <group>
+                            <field name="eims_house_number"/>
+                            <field name="eims_region"/>
+                            <field name="eims_buyers_city_code"/>
+                            <field name="eims_wereda"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

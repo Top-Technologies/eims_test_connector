@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_eims_registered_invoice,eims.registered.invoice,model_eims_registered_invoice,,1,1,1,1
+access_eims_registered_invoice_user,eims.registered.invoice.user,model_eims_registered_invoice,base.group_user,1,1,1,1
+access_eims_registered_invoice_manager,EIMS Registered Invoice Manager,model_eims_registered_invoice,base.group_system,1,1,1,1
+access_eims_cancel_log,eims.cancel.log,model_eims_cancel_log,,1,1,1,1
+access_eims_cancel_log_user,eims.cancel.log.user,model_eims_cancel_log,base.group_user,1,1,1,1
+access_eims_cancel_log_manager,EIMS Cancel Log Manager,model_eims_cancel_log,base.group_system,1,1,1,1
+access_eims_unsent_log_user,eims.unsent.log.user,model_eims_unsent_log,base.group_user,1,1,1,0
+access_eims_unsent_log_manager,EIMS Unsent Log Manager,model_eims_unsent_log,base.group_system,1,1,1,0

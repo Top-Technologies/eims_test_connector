@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_company_form_eims_inherit" model="ir.ui.view">
+        <field name="name">res.company.form.eims.inherit</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="after">
+                <field name="eims_tin" string="TIN"/>
+                <field name="eims_vat_number" string="VAT Number"/>
+                <field name="eims_seller_city_code" string="City Code (EIMS)"/>
+                <field name="eims_region" string="Region"/>
+                <field name="eims_house_number" string="House Number"/>
+                <field name="eims_locality" string="Locality"/>
+                <field name="eims_wereda" string="Wereda"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

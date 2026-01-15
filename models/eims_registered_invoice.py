@@ -1,6 +1,10 @@
 import json
 
-from odoo import models, fields, _
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+import qrcode
+import base64
+from io import BytesIO
 
 
 class EimsRegisteredInvoice(models.Model):
@@ -25,6 +29,10 @@ class EimsRegisteredInvoice(models.Model):
 
     ack_date = fields.Datetime(
         string="Acknowledgement Date",
+        help="Date when EIMS acknowledged the invoice"
+    )
+    eims_ack_date = fields.Datetime(
+        string="EIMS Acknowledgement Date",
         help="Date when EIMS acknowledged the invoice"
     )
     status = fields.Selection(
@@ -57,6 +65,7 @@ class EimsRegisteredInvoice(models.Model):
         string="EIMS QR Code (Base64)",
         help="Signed QR Code returned by EIMS"
     )
+    eims_status = fields.Char(string="EIMS Status")
 
     # Verification fields
     eims_verified = fields.Boolean(
@@ -114,6 +123,7 @@ class EimsRegisteredInvoice(models.Model):
     eims_transaction_type = fields.Char(string="Transaction Type")
     eims_reference_details = fields.Json(string="Reference Details")
     eims_previous_irn = fields.Char(string="Previous IRN")
+    eims_related_document = fields.Char(string="Related Document")
 
     eims_response = fields.Text(
         string="Full EIMS Response (JSON)",
@@ -130,8 +140,32 @@ class EimsRegisteredInvoice(models.Model):
         'res.users', string="Created By", readonly=True,
         default=lambda self: self.env.user
     )
-
-
+    eims_bulk_response = fields.Text(
+        string="Full EIMS Bulk Response (JSON)",
+        help="Complete JSON response from EIMS API for audit purposes"
+    )
+    #
+    # eims_qr_code_img = fields.Binary("QR Code Image", compute="_compute_qr_image", store=True)
+    #
+    # @api.depends('eims_qr_code')
+    # def _compute_qr_image(self):
+    #     for rec in self:
+    #         if rec.eims_qr_code:
+    #             qr = qrcode.QRCode(
+    #                 version=None,  # auto version
+    #                 error_correction=qrcode.constants.ERROR_CORRECT_M,
+    #                 box_size=10,
+    #                 border=2
+    #             )
+    #             qr.add_data(rec.eims_qr_code)
+    #             qr.make(fit=True)  # automatically choose version 1-40
+    #
+    #             img = qr.make_image(fill_color="black", back_color="white")
+    #             buffer = BytesIO()
+    #             img.save(buffer, format="PNG")
+    #             rec.eims_qr_code_img = base64.b64encode(buffer.getvalue())
+    #         else:
+    #             rec.eims_qr_code_img = False
 
     def action_verify_invoice_from_log(self):
         for record in self:
@@ -204,9 +238,6 @@ class EimsRegisteredInvoice(models.Model):
                 'eims_transaction_type': record.move_id.eims_transaction_type or '',
                 'eims_reference_details': record.move_id.eims_reference_details or '',
                 'eims_previous_irn': record.move_id.eims_previous_irn or '',
-                'eims_document_number': record.move_id.eims_document_number or '',
-                'eims_document_date': record.move_id.eims_document_date or '',
-
 
                 # 'eims_response': record.move_id.eims_response or '',
 
@@ -216,3 +247,11 @@ class EimsRegisteredInvoice(models.Model):
             record.message_post(body=_(
                 f"✅ Verification triggered from log. Status mapped to '{eims_status_value}'."
             ))
+
+    def action_print_eims_invoice(self):
+        self.ensure_one()
+        if not self.move_id:
+            raise UserError("No related Odoo invoice found.")
+        return self.env.ref(
+            "eims_test_connector_12.action_report_eims_invoice_replica_v2"
+        ).report_action(self.move_id)

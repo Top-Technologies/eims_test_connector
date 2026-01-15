@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ========================================= -->
+        <!--  TEMPLATE: EIMS Registered Successfully   -->
+        <!-- ========================================= -->
+        <record id="email_template_eims_invoice" model="mail.template">
+            <field name="name">EIMS Registered Invoice Latest</field>
+            <field name="model_id" ref="eims_test_connector_12.model_account_move"/>
+
+            <!-- Sender & Receiver -->
+            <field name="email_from">${user.email or user.company_id.email}</field>
+            <field name="email_to">${object.partner_id.email}</field>
+
+            <!-- Subject -->
+            <field name="subject">
+                Registered Invoice - ${object.eims_irn or ''}
+            </field>
+
+            <!-- Email Body -->
+            <field name="body_html">
+                <![CDATA[
+            <p>Dear <t t-esc="object.partner_id.name or 'Customer'"/>,</p>
+
+            <p>Your invoice has been successfully registered and verified by EIMS.</p>
+
+            <p>
+                <strong>Invoice:</strong>
+                <t t-esc="object.name or object.move_id.name"/><br/>
+
+                <strong>IRN:</strong>
+                <t t-esc="object.eims_irn or 'N/A'"/><br/>
+
+                <strong>Acknowledged On:</strong>
+                <t t-esc="object.eims_ack_date or 'N/A'"/>
+            </p>
+
+            <p>Please find the attached invoice PDF.</p>
+
+            <p>Regards,<br/>
+                <t t-esc="object.company_id.name"/>
+            </p>
+        ]]>
+            </field>
+        </record>
+
+
+        <!-- ========================================= -->
+        <!--  TEMPLATE: EIMS INVOICE Cancelled     -->
+        <!-- ========================================= -->
+        <record id="email_template_eims_cancelled" model="mail.template">
+            <field name="name">EIMS Cancelled Invoice</field>
+            <field name="model_id" ref="account.model_account_move"/>
+
+            <!-- Sender/Receiver -->
+            <field name="email_from">${user.email or user.company_id.email}</field>
+            <field name="email_to">${object.partner_id.email or ''}</field>
+
+            <field name="subject">
+                Invoice Cancelled - ${object.name or ''}
+            </field>
+
+            <field name="body_html">
+                <![CDATA[
+            <p>Dear <t t-esc="object.partner_id.name or 'Customer'"/>,</p>
+
+            <p>
+                Your invoice has been <strong>cancelled</strong> in the EIMS system.
+            </p>
+
+            <p>
+                <strong>Invoice:</strong> <t t-esc="object.name"/><br/>
+                <strong>IRN:</strong> <t t-esc="object.eims_irn or 'N/A'"/><br/>
+                <strong>Cancelled On:</strong> <t t-esc="object.write_date.strftime('%Y-%m-%d %H:%M:%S')"/>
+            </p>
+
+            <p>If this action was not expected, please contact your seller.</p>
+
+            <p>Regards,<br/>
+            <t t-esc="object.company_id.name"/></p>
+            ]]>
+            </field>
+        </record>
+
+        <!-- ========================================= -->
+        <!--      TEMPLATE: EIMS Sales Receipt Email   -->
+        <!-- ========================================= -->
+        <record id="email_template_eims_receipt" model="mail.template">
+            <field name="name">EIMS Registered Sales Receipt</field>
+            <field name="model_id" ref="eims_test_connector_12.model_account_move"/>
+
+            <!-- Sender & Receiver -->
+            <field name="email_from">${user.email or user.company_id.email}</field>
+            <field name="email_to">${object.partner_id.email}</field>
+
+            <!-- Subject -->
+            <field name="subject">
+                EIMS Sales Receipt - ${object.eims_receipt_rrn or ''}
+            </field>
+
+            <!-- Email Body -->
+            <field name="body_html">
+                <![CDATA[
+        <p>Dear <t t-esc="object.partner_id.name or 'Customer'"/>,</p>
+
+        <p>Your payment receipt has been successfully generated and registered in EIMS.</p>
+
+        <p>
+            <strong>Receipt RRN:</strong>
+            <t t-esc="object.eims_receipt_rrn or 'N/A'"/><br/>
+
+            <strong>Invoice:</strong>
+            <t t-esc="object.name or object.move_id.name"/><br/>
+
+            <strong>Collected Amount:</strong>
+            <t t-esc="object.amount_total or 'N/A'"/><br/>
+
+            <strong>Payment Method:</strong> Cash<br/>
+        </p>
+
+<!--        <p>-->
+<!--            <strong>QR Code:</strong><br/>-->
+<!--            <t t-if="object.eims_receipt_qr_code">-->
+<!--                <img t-att-src="'data:image/png;base64,%s' % object.eims_receipt_qr_code" width="180"/>-->
+<!--            </t>-->
+<!--        </p>-->
+
+        <p>Please keep this receipt for your records.</p>
+
+        <p>Regards,<br/>
+            <t t-esc="object.company_id.name"/>
+        </p>
+        ]]>
+            </field>
+        </record>
+
+        <!-- ========================================= -->
+        <!--      TEMPLATE: EIMS Withholding Email   -->
+        <!-- ========================================= -->
+        <record id="email_template_eims_withholding" model="mail.template">
+            <field name="name">EIMS Withholding Receipt</field>
+            <field name="model_id" ref="eims_test_connector_12.model_eims_withholding_receipt"/>
+
+            <!-- Sender & Receiver -->
+            <field name="email_from">${user.email or user.company_id.email}</field>
+            <field name="email_to">${object.partner_id.email or ''}</field>
+
+            <!-- Subject -->
+            <field name="subject">
+                Withholding Receipt - ${object.invoice_irn or ''}
+            </field>
+
+            <field name="body_html">
+                <![CDATA[
+        <p>Dear <t t-esc="object.partner_id.name or 'Customer'"/>,</p>
+
+        <p>Your withholding receipt has been successfully processed.</p>
+
+        <p>
+            <strong>Invoice IRN:</strong> <t t-esc="object.invoice_irn"/><br/>
+            <strong>RRN:</strong> <t t-esc="object.rrn or 'Pending'"/><br/>
+            <strong>Withholding Rate:</strong> <t t-esc="object.withholding_rate"/>%<br/>
+            <strong>Withholding Amount:</strong> <t t-esc="object.withholding_amount"/>
+        </p>
+
+        <p>Regards,<br/>
+            <t t-esc="object.company_id.name"/>
+        </p>
+        ]]>
+            </field>
+        </record>
+
+    </data>
+</odoo>

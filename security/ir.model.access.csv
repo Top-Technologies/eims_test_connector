@@ -7,3 +7,26 @@ access_eims_cancel_log_user,eims.cancel.log.user,model_eims_cancel_log,base.grou
 access_eims_cancel_log_manager,EIMS Cancel Log Manager,model_eims_cancel_log,base.group_system,1,1,1,1
 access_eims_unsent_log_user,eims.unsent.log.user,model_eims_unsent_log,base.group_user,1,1,1,0
 access_eims_unsent_log_manager,EIMS Unsent Log Manager,model_eims_unsent_log,base.group_system,1,1,1,0
+access_eims_bulk_callback_log,eims.bulk.callback.log,model_eims_bulk_callback_log,,1,1,1,1
+access_eims_bulk_callback_log_user,eims.bulk.callback.log.user,model_eims_bulk_callback_log,base.group_user,1,1,1,1
+access_eims_bulk_callback_log_manager,EIMS Bulk Callback Log Manager,model_eims_bulk_callback_log,base.group_system,1,1,1,1
+access_eims_unregistered_invoice_user,eims.unregistered.invoice.user,model_eims_unregistered_invoice,base.group_user,1,1,1,1
+access_eims_unregistered_invoice_manager,EIMS Unregistered Invoice Manager,model_eims_unregistered_invoice,base.group_system,1,1,1,1
+access_eims_unregistered_invoice_user,eims.unregistered.invoice.user,model_eims_unregistered_invoice,base.group_user,1,1,1,1
+access_eims_unregistered_invoice_manager,EIMS Unregistered Invoice Manager,model_eims_unregistered_invoice,base.group_system,1,1,1,1
+access_eims_bulk_callback_log_user,eims.bulk.callback.log.user,model_eims_bulk_callback_log,base.group_user,1,1,1,1
+access_eims_bulk_callback_log_manager,EIMS Bulk Callback Log Manager,model_eims_bulk_callback_log,base.group_system,1,1,1,1
+access_eims_receipt_log_user,eims.receipt.log.user,model_eims_receipt_log,base.group_user,1,1,1,1
+access_eims_receipt_log_manager,EIMS Receipt Log Manager,model_eims_receipt_log,base.group_system,1,1,1,1
+access_eims_credit_memo_log_user,eims.credit.memo.log.user,model_eims_credit_memo_log,base.group_user,1,1,1,1
+access_eims_credit_memo_log_manager,EIMS Credit Memo Log Manager,model_eims_credit_memo_log,base.group_system,1,1,1,1
+access_eims_withholding_receipt_user,eims.withholding.receipt.user,model_eims_withholding_receipt,base.group_user,1,1,1,1
+access_eims_withholding_receipt_manager,EIMS Withholding Receipt Manager,model_eims_withholding_receipt,base.group_system,1,1,1,1
+access_eims_withholding_receipt_user,eims.withholding.receipt.user,model_eims_withholding_receipt,base.group_user,1,1,1,1
+access_eims_withholding_receipt_manager,EIMS Withholding Receipt Manager,model_eims_withholding_receipt,base.group_system,1,1,1,1
+access_eims_notification_log_user,eims.notification.log.user,model_eims_notification_log,base.group_user,1,1,1,1
+access_eims_notification_log_manager,EIMS Notification Log Manager,model_eims_notification_log,base.group_system,1,1,1,1
+access_eims_notification_log_user,eims.notification.log.user,model_eims_notification_log,base.group_user,1,1,1,1
+access_eims_notification_log_manager,EIMS Notification Log Manager,model_eims_notification_log,base.group_system,1,1,1,1
+access_eims_bulk_cancel_wizard_user,eims.bulk.cancel.wizard.user,model_eims_bulk_cancel_wizard,base.group_user,1,1,1,1
+access_eims_bulk_cancel_wizard_line_user,eims.bulk.cancel.wizard.line.user,model_eims_bulk_cancel_wizard_line,base.group_user,1,1,1,1

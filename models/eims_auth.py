@@ -1,15 +1,13 @@
 import json
 import requests
 from datetime import datetime, timedelta
+from odoo import api, models
+from odoo.exceptions import UserError
+from ..services.crypto_utils import sign_eims_request
+from urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter
 
-# --- Hardcoded credentials ---
-CLIENT_ID = "fa39eee3-dfd7-4d7d-b62f-26e474a0c8c1"
-CLIENT_SECRET = "a33a3e32-566c-482f-960f-8fe230ea74cf"
-API_KEY = "0702d840-e684-455e-9147-6ce8f9cd6b5a"
-TIN = "0054835018"
-LOGIN_URL = "http://core.mor.gov.et/auth/login"
-
-# --- Cache token globally ---
+# Token cache (same as before)
 _TOKEN_CACHE = {
     "access_token": None,
     "expiry": None,
@@ -17,41 +15,98 @@ _TOKEN_CACHE = {
 }
 
 
-def get_eims_token():
-    """
-    Returns a valid EIMS token. Automatically refreshes if expired.
-    """
-    global _TOKEN_CACHE
+class EimsAuth(models.AbstractModel):
+    _name = "eims.auth"
+    _description = "EIMS Authentication Handler"
 
-    # If token exists and is not expired, return it
-    if _TOKEN_CACHE["access_token"] and _TOKEN_CACHE["expiry"]:
-        if datetime.utcnow() < _TOKEN_CACHE["expiry"]:
-            return _TOKEN_CACHE["access_token"], _TOKEN_CACHE["encryption_key"]
+    @api.model
+    def get_eims_http_session(self):
+        """Returns a requests Session configured with EIMS retry logic."""
+        retry_strategy = Retry(
+            total=3,
+            backoff_factor=2,
+            status_forcelist=[429, 500, 502, 503, 504],
+            allowed_methods=["POST", "GET"]
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        session = requests.Session()
+        session.mount("https://", adapter)
+        session.mount("http://", adapter)
+        return session
 
-    # Otherwise, request a new token
-    payload = {
-        "clientId": CLIENT_ID,
-        "clientSecret": CLIENT_SECRET,
-        "apikey": API_KEY,
-        "tin": TIN
-    }
-    headers = {"Content-Type": "application/json"}
+    @api.model
+    def get_eims_credentials(self):
+        """
+        Read credentials securely from Odoo System Parameters.
+        Only Admins can modify them.
+        """
+        ICP = self.env['ir.config_parameter'].sudo()
 
-    response = requests.post(LOGIN_URL, json=payload, headers=headers, timeout=30)
-    response.raise_for_status()
-    data = response.json()
+        client_id = ICP.get_param("eims.client_id")
+        client_secret = ICP.get_param("eims.client_secret")
+        api_key = ICP.get_param("eims.api_key")
+        tin = ICP.get_param("eims.tin")
+        login_url = ICP.get_param("eims.login_url") or "https://core.mor.gov.et/auth/login"
 
-    token = data["data"]["accessToken"]
-    encryption_key = data["data"].get("encryptionKey")
+        missing = []
+        if not client_id: missing.append("eims.client_id")
+        if not client_secret: missing.append("eims.client_secret")
+        if not api_key: missing.append("eims.api_key")
+        if not tin: missing.append("eims.tin")
 
-    # EIMS tokens usually expire in 1 hour — adjust if needed
-    expiry = datetime.utcnow() + timedelta(minutes=55)
+        if missing:
+            raise UserError(
+                "Missing EIMS credentials:\n- " + "\n- ".join(missing) +
+                "\n\nGo to: Settings → Technical → System Parameters"
+            )
 
-    # Cache the token
-    _TOKEN_CACHE.update({
-        "access_token": token,
-        "expiry": expiry,
-        "encryption_key": encryption_key
-    })
+        return client_id, client_secret, api_key, tin, login_url
 
-    return token, encryption_key
+    @api.model
+    def get_eims_token(self):
+        """
+        Returns a valid EIMS token.
+        Loads credentials from Odoo System Parameters (secure),
+        caches token for 55 minutes.
+        """
+        global _TOKEN_CACHE
+
+        # Return cached token if still valid
+        if _TOKEN_CACHE["access_token"] and _TOKEN_CACHE["expiry"]:
+            if datetime.utcnow() < _TOKEN_CACHE["expiry"]:
+                return (
+                    _TOKEN_CACHE["access_token"],
+                    _TOKEN_CACHE["encryption_key"]
+                )
+
+        # Load secure credentials
+        client_id, client_secret, api_key, tin, login_url = self.get_eims_credentials()
+
+        # Prepare payload
+        payload = {
+            "clientId": client_id,
+            "clientSecret": client_secret,
+            "apikey": api_key,
+            "tin": tin
+        }
+
+        headers = {"Content-Type": "application/json"}
+
+        # Call EIMS login API
+        signed_payload = sign_eims_request(payload)
+        response = requests.post(login_url, json=signed_payload, headers=headers, timeout=30)
+        response.raise_for_status()
+        data = response.json()
+
+        token = data["data"]["accessToken"]
+        encryption_key = data["data"].get("encryptionKey")
+        expiry = datetime.utcnow() + timedelta(minutes=55)
+
+        # Cache token
+        _TOKEN_CACHE.update({
+            "access_token": token,
+            "expiry": expiry,
+            "encryption_key": encryption_key
+        })
+
+        return token, encryption_key

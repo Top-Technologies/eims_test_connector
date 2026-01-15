@@ -12,4 +12,5 @@ class ResCompany(models.Model):
     eims_locality = fields.Char(string="Locality")
     # eims_kebele = fields.Char(string="Kebele")
     eims_wereda = fields.Char(string="Wereda")
+    eims_system_number = fields.Char(string="System Number")
 

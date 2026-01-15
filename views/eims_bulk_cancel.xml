@@ -1,0 +1,30 @@
+<odoo>
+    <record id="view_eims_bulk_cancel_list" model="ir.ui.view">
+        <field name="name">eims.bulk.cancel.list</field>
+        <field name="model">eims.bulk.cancel</field>
+        <field name="arch" type="xml">
+            <list string="Bulk Cancel" editable="bottom">
+                <field name="move_id"/>
+                <field name="partner_id"/>
+                <field name="invoice_date"/>
+                <field name="amount_total"/>
+                <field name="currency_id"/>
+                <field name="eims_irn"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_invoice_tree_eims_cancel_button" model="ir.ui.view">
+        <field name="name">account.invoice.tree.eims.cancel.button</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_bulk_cancel_eims"
+                        string="cancel All to EIMS"
+                        type="object"
+                        class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

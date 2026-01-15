@@ -10,6 +10,7 @@ class ResPartner(models.Model):
         ('PASSPORT', 'Passport')
     ], string="ID Type", default='KID')
     eims_id_number = fields.Char(string="ID Number")
+    eims_vat_number = fields.Char(string="VAT Number")
     eims_region = fields.Char(string="Region")
     # eims_kebele = fields.Char(string="Kebele")
     eims_wereda = fields.Char(string="Wereda")

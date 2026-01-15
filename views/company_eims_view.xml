@@ -13,6 +13,7 @@
                 <field name="eims_house_number" string="House Number"/>
                 <field name="eims_locality" string="Locality"/>
                 <field name="eims_wereda" string="Wereda"/>
+                <field name="eims_system_number" string="System Number"/>
             </xpath>
         </field>
     </record>

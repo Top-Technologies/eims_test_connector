@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List view for EIMS Registered Invoices -->
+    <record id="view_eims_registered_credit_invoice_list" model="ir.ui.view">
+        <field name="name">eims.registered.credit.invoice.list</field>
+        <field name="model">eims.credit.memo.log</field>
+        <field name="arch" type="xml">
+            <list string="EIMS Registered Credit Memo Invoices">
+                <field name="move_id"/>
+                <field name="partner_id"/>
+                <field name="eims_irn"/>
+                <field name="ack_date"/>
+                <field name="status"/>
+                <field name="amount_total"/>
+                <field name="currency_id"/>
+                <field name="eims_document_number"/>
+                <field name="eims_invoice_counter"/>
+                <field name="eims_document_date"/>
+                <field name="eims_status"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view for EIMS Registered Invoices -->
+    <record id="view_eims_registered_credit_invoice_form" model="ir.ui.view">
+        <field name="name">eims.registered.credit.invoice.form</field>
+        <field name="model">eims.credit.memo.log</field>
+        <field name="arch" type="xml">
+            <form string="EIMS Registered Invoice">
+                <sheet>
+                    <header>
+                        <button name="action_print_eims_invoice"
+                                string="Print EIMS Invoice"
+                                type="object"
+                                class="btn-primary oe_highlight"
+                        />
+                    </header>
+                    <group>
+                        <field name="move_id"/>
+                        <field name="partner_id"/>
+                        <field name="eims_irn"/>
+                        <field name="credit_memo_irn"/>
+                        <field name="ack_date"/>
+                        <field name="eims_status"/>
+                        <field name="amount_total"/>
+                        <field name="currency_id"/>
+                        <!--                         <field name="eims_version"/>-->
+                        <!--                        <field name="eims_item_list" widget="text"/>-->
+                    </group>
+
+                    <group string="EIMS Base64 Data">
+                        <field name="eims_signed_invoice"/>
+                        <field name="eims_qr_code"/>
+                    </group>
+
+                    <group string="Verification Details">
+                        <field name="eims_verified"/>
+                        <field name="eims_status"/>
+                        <field name="eims_document_number"/>
+                        <field name="eims_document_date"/>
+
+
+                        <!--                        <field name="eims_buyer_details" widget="text"/>-->
+
+                        <!--                        <field name="eims_seller_details" widget="text"/>-->
+                        <!--                        <field name="eims_value_details" widget="text"/>-->
+
+                        <!--                        <field name="eims_payment_details" widget="text"/>-->
+                        <field name="eims_verified_data" widget="json"/>
+                        <!--                        <button name="action_verify_invoice_from_log"-->
+                        <!--                                type="object"-->
+                        <!--                                string="Verify Invoice"-->
+                        <!--                                class="oe_highlight"/>-->
+                    </group>
+
+                    <group string="EIMS Value Summary">
+                        <field name="eims_total_value" readonly="1"/>
+                        <field name="eims_tax_value" readonly="1"/>
+                        <field name="eims_invoice_currency" readonly="1"/>
+                    </group>
+                    <group string="Buyer Details">
+                        <!--                        <field name="eims_buyer_details" widget="text"/>-->
+                        <field name="eims_buyers_tin"/>
+                        <field name="eims_buyers_city_code"/>
+                        <field name="eims_buyers_region"/>
+                        <field name="eims_buyers_wereda"/>
+                        <field name="eims_buyers_id_type"/>
+                        <field name="eims_buyers_id_number"/>
+                        <field name="eims_buyers_legal_name"/>
+                        <field name="eims_buyers_email"/>
+                        <field name="eims_buyers_phone"/>
+                    </group>
+
+                    <group string="Source System Details">
+                        <field name="eims_source_system" widget="text"/>
+                        <field name="eims_cashier_name"/>
+                        <field name="eims_system_number"/>
+                        <field name="eims_invoice_counter"/>
+                        <field name="eims_sales_person_name"/>
+                    </group>
+
+                    <group string="Seller Details">
+                        <!--                        <field name="eims_seller_details" widget="text"/>-->
+                        <field name="eims_seller_tin"/>
+                        <field name="eims_seller_city_code"/>
+                        <field name="eims_seller_region"/>
+                        <field name="eims_seller_wereda"/>
+                        <!--                        <field name="eims_seller_id_type"/>-->
+                        <!--                        <field name="eims_seller_id_number"/>-->
+                        <field name="eims_seller_legal_name"/>
+                        <field name="eims_seller_email"/>
+                        <field name="eims_seller_phone"/>
+                        <field name="eims_seller_tax_center"/>
+                        <field name="eims_seller_vat_number"/>
+                        <field name="eims_seller_house_number"/>
+                        <field name="eims_seller_locality"/>
+                    </group>
+                    <group string="Payment Details">
+                        <!--                        <field name="eims_payment_details" widget="text"/>-->
+                        <field name="eims_payment_mode"/>
+                        <field name="eims_payment_term"/>
+                    </group>
+                    <group string="Document Details">
+                        <!--                        <field name="eims_document_details" widget="text"/>-->
+                        <field name="eims_document_date"/>
+                        <field name="eims_document_type"/>
+                        <field name="eims_document_reason"/>
+                        <field name="eims_document_number"/>
+                    </group>
+                    <group string="Transaction Details">
+                        <field name="eims_transaction_type"/>
+                        <field name="eims_reference_details" widget="text"/>
+                        <field name="eims_previous_irn"/>
+                    </group>
+                    <group string="Full EIMS Response">
+                        <field name="eims_response" widget="text"/>
+                    </group>
+                    <group string="Full EIMS Bulk Response">
+                        <field name="eims_bulk_response" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for smart button -->
+    <record id="action_eims_registered_credit_invoice" model="ir.actions.act_window">
+        <field name="name">EIMS Registered Credit Memo Invoices</field>
+        <field name="res_model">eims.credit.memo.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_eims_registered_credit_invoice_list"/>
+        <field name="target">current</field>
+    </record>
+
+
+</odoo>

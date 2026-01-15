@@ -15,6 +15,7 @@
                 <field name="amount_total"/>
                 <field name="currency_id"/>
                 <field name="eims_document_number"/>
+                <field name="eims_invoice_counter"/>
                 <field name="eims_document_date"/>
                 <field name="eims_status"/>
             </list>
@@ -28,16 +29,23 @@
         <field name="arch" type="xml">
             <form string="EIMS Registered Invoice">
                 <sheet>
+                    <header>
+                        <button name="action_print_eims_invoice"
+                                string="Print EIMS Invoice"
+                                type="object"
+                                class="btn-primary oe_highlight"
+                        />
+                    </header>
                     <group>
                         <field name="move_id"/>
                         <field name="partner_id"/>
                         <field name="eims_irn"/>
                         <field name="ack_date"/>
-                        <field name="status"/>
+                        <field name="eims_status"/>
                         <field name="amount_total"/>
                         <field name="currency_id"/>
                         <!--                         <field name="eims_version"/>-->
-<!--                        <field name="eims_item_list" widget="text"/>-->
+                        <!--                        <field name="eims_item_list" widget="text"/>-->
                     </group>
 
                     <group string="EIMS Base64 Data">
@@ -52,17 +60,17 @@
                         <field name="eims_document_date"/>
 
 
-<!--                        <field name="eims_buyer_details" widget="text"/>-->
+                        <!--                        <field name="eims_buyer_details" widget="text"/>-->
 
-<!--                        <field name="eims_seller_details" widget="text"/>-->
-<!--                        <field name="eims_value_details" widget="text"/>-->
+                        <!--                        <field name="eims_seller_details" widget="text"/>-->
+                        <!--                        <field name="eims_value_details" widget="text"/>-->
 
-<!--                        <field name="eims_payment_details" widget="text"/>-->
+                        <!--                        <field name="eims_payment_details" widget="text"/>-->
                         <field name="eims_verified_data" widget="json"/>
-                        <button name="action_verify_invoice_from_log"
-                                type="object"
-                                string="Verify Invoice"
-                                class="oe_highlight"/>
+                        <!--                        <button name="action_verify_invoice_from_log"-->
+                        <!--                                type="object"-->
+                        <!--                                string="Verify Invoice"-->
+                        <!--                                class="oe_highlight"/>-->
                     </group>
 
                     <group string="EIMS Value Summary">
@@ -71,7 +79,7 @@
                         <field name="eims_invoice_currency" readonly="1"/>
                     </group>
                     <group string="Buyer Details">
-<!--                        <field name="eims_buyer_details" widget="text"/>-->
+                        <!--                        <field name="eims_buyer_details" widget="text"/>-->
                         <field name="eims_buyers_tin"/>
                         <field name="eims_buyers_city_code"/>
                         <field name="eims_buyers_region"/>
@@ -92,7 +100,7 @@
                     </group>
 
                     <group string="Seller Details">
-<!--                        <field name="eims_seller_details" widget="text"/>-->
+                        <!--                        <field name="eims_seller_details" widget="text"/>-->
                         <field name="eims_seller_tin"/>
                         <field name="eims_seller_city_code"/>
                         <field name="eims_seller_region"/>
@@ -108,12 +116,12 @@
                         <field name="eims_seller_locality"/>
                     </group>
                     <group string="Payment Details">
-<!--                        <field name="eims_payment_details" widget="text"/>-->
+                        <!--                        <field name="eims_payment_details" widget="text"/>-->
                         <field name="eims_payment_mode"/>
                         <field name="eims_payment_term"/>
                     </group>
                     <group string="Document Details">
-<!--                        <field name="eims_document_details" widget="text"/>-->
+                        <!--                        <field name="eims_document_details" widget="text"/>-->
                         <field name="eims_document_date"/>
                         <field name="eims_document_type"/>
                         <field name="eims_document_reason"/>
@@ -127,7 +135,9 @@
                     <group string="Full EIMS Response">
                         <field name="eims_response" widget="text"/>
                     </group>
-
+                    <group string="Full EIMS Bulk Response">
+                        <field name="eims_bulk_response" widget="text"/>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -141,5 +151,6 @@
         <field name="view_id" ref="view_eims_registered_invoice_list"/>
         <field name="target">current</field>
     </record>
+
 
 </odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard Form View -->
+    <record id="view_eims_bulk_cancel_wizard_form" model="ir.ui.view">
+        <field name="name">eims.bulk.cancel.wizard.form</field>
+        <field name="model">eims.bulk.cancel.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Cancel EIMS Invoices">
+                <sheet>
+                    <group>
+                        <div class="oe_title">
+                            <h2>Select Cancellation Reason for Each Invoice</h2>
+                        </div>
+                    </group>
+                    <field name="selected_invoice_ids" invisible="1"/>
+                    <group>
+                        <field name="line_ids" nolabel="1">
+                            <list editable="bottom" create="false" delete="false" open="false">
+                                <field name="invoice_id" string="Invoice" readonly="1" options="{'no_open': True}"/>
+                                <field name="partner_name" readonly="1"/>
+                                <field name="amount_total" readonly="1"/>
+                                <field name="currency_id" column_invisible="1"/>
+                                <field name="eims_irn" readonly="1"/>
+                                <field name="reason_code"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm_cancellation" 
+                            string="Confirm Cancellation" 
+                            type="object" 
+                            class="btn-primary"/>
+                    <button string="Cancel" 
+                            class="btn-secondary" 
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard Action -->
+    <record id="action_eims_bulk_cancel_wizard" model="ir.actions.act_window">
+        <field name="name">Bulk Cancel EIMS Invoices</field>
+        <field name="res_model">eims.bulk.cancel.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'active_ids': active_ids, 'active_model': active_model}</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

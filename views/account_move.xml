@@ -8,11 +8,11 @@
 
             <!-- Add smart button in header -->
             <xpath expr="//header" position="inside">
-                <button name="action_send_to_eims"
-                        type="object"
-                        string="Send to EIMS"
-                        class="oe_highlight"
-                />
+                <!--                <button name="action_send_to_eims"-->
+                <!--                        type="object"-->
+                <!--                        string="Send to EIMS"-->
+                <!--                        class="oe_highlight"-->
+                <!--                />-->
 
                 <button name="open_eims_logs"
                         type="object"
@@ -33,7 +33,14 @@
                         icon="fa-list">
                     <field name="eims_cancel_log_count" widget="statinfo"/>
                 </button>
-                <button name="action_bulk_cancel_eims"
+                <button name="open_eims_receipt_log"
+                        type="object"
+                        string="EIMS Receipt Log"
+                        class="oe_stat_button"
+                        icon="fa-list">
+                    <field name="eims_receipt_log_count" widget="statinfo"/>
+                </button>
+                <button name="action_view_sent_eims_invoices"
                         string="Bulk Cancel EIMS"
                         type="object"
                         class="btn-secondary"
@@ -46,12 +53,44 @@
                         class="btn btn-primary"
                 />
 
+                <button name="action_send_to_eims"
+                        string="Confirm and Send"
 
-                <button name="action_send_bulk_to_eims"
-                        string="Bulk send to EIMS"
                         type="object"
+                        class="btn-primary"/>
+
+                <button name="action_view_unregistered_eims_invoices"
+                        string="Send Bulk"
+                        type="object"
+                        class="btn-secondary"/>
+                <button name="action_create_eims_receipt"
+                        string="Generate Receipt"
+                        type="object"
+                        class="btn-primary"/>
+                <button name="action_send_credit_memo_to_eims"
+                        type="object"
+                        string="Register Credit Memo"
+                        class="btn-primary"/>
+                <button name="open_eims_credit_log"
+                        type="object"
+                        string="EIMS Credit Log"
+                        class="oe_stat_button"
+                        icon="fa-list">
+                    <field name="eims_credit_log_count" widget="statinfo"/>
+                </button>
+
+                <button name="action_send_eims_email"
+                        string="Send EIMS Email"
+                        type="object"
+                        class="oe_highlight"/>
+
+                <button name="action_send_cancel_email"
+                        type="object"
+                        string="Send Cancellation Email"
                         class="btn-secondary"
-                />
+                        />
+
+
             </xpath>
 
         </field>

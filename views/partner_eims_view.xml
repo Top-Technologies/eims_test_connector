@@ -12,6 +12,7 @@
                             <field name="eims_tin"/>
                             <field name="eims_id_type"/>
                             <field name="eims_id_number"/>
+                            <field name="eims_vat_number"/>
                         </group>
                         <group>
                             <field name="eims_house_number"/>

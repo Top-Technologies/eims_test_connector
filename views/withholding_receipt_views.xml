@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu + Action -->
+    <record id="action_eims_withholding_receipt" model="ir.actions.act_window">
+        <field name="name">Withholding Receipts</field>
+        <field name="res_model">eims.withholding.receipt</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create withholding receipts for testing.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_eims_root" name="EIMS" parent="account.menu_finance_payables" sequence="90"/>
+
+    <menuitem id="menu_eims_withholding" name="Withholding Receipts" parent="menu_eims_root"
+              action="action_eims_withholding_receipt" sequence="10"/>
+
+    <!-- List view -->
+    <record id="view_eims_withholding_list" model="ir.ui.view">
+        <field name="name">eims.withholding.receipt.list</field>
+        <field name="model">eims.withholding.receipt</field>
+        <field name="arch" type="xml">
+            <list string="Withholding Receipts">
+                <field name="name"/>
+                <field name="invoice_irn"/>
+                <field name="seller_tin"/>
+                <field name="pre_tax_amount"/>
+                <field name="withholding_rate"/>
+                <field name="withholding_amount"/>
+                <field name="rrn"/>
+                <field name="status"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="view_eims_withholding_form" model="ir.ui.view">
+        <field name="name">eims.withholding.receipt.form</field>
+        <field name="model">eims.withholding.receipt</field>
+        <field name="arch" type="xml">
+            <form string="Withholding Receipt">
+                <sheet>
+                    <header>
+                        <button name="action_send_eims_withholding_email"
+                                string="Send EIMS Withholding Receipt Email"
+                                type="object"
+                                class="btn-primary"
+                        />
+                        <button name="action_print_eims_withhold_receipt"
+                                string="Print EIMS Withholding Receipt"
+                                type="object"
+                                class="btn-primary oe_highlight"
+                        />
+                    </header>
+                    <group>
+                        <field name="invoice_irn"/>
+                        <button string="Verify IRN" type="object" name="action_verify_irn" class="btn-primary"/>
+                        <newline/>
+                        <field name="seller_tin" readonly="1"/>
+                        <field name="seller_name" readonly="1"/>
+                        <field name="buyer_tin" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="pre_tax_amount"/>
+                        <field name="withholding_rate"/>
+                        <field name="withholding_amount"/>
+                        <button string="Submit Withholding" type="object" name="action_submit_withholding"
+                                class="btn-success"/>
+                    </group>
+                    <group>
+                        <field name="qr_code"/>
+                    </group>
+                    <group>
+                        <field name="rrn"/>
+                        <field name="status"/>
+                        <field name="eims_response" widget="html" readonly="1" nolabel="1"/>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <field name="user_id"/>
+                </footer>
+                 <chatter/>
+            </form>
+        </field>
+    </record>
+</odoo>

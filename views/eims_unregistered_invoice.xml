@@ -1,0 +1,56 @@
+<odoo>
+    <record id="view_eims_unregistered_invoice_list" model="ir.ui.view">
+        <field name="name">eims.unregistered.invoice.list</field>
+        <field name="model">eims.unregistered.invoice</field>
+        <field name="arch" type="xml">
+            <list string="Unregistered Invoices" editable="bottom">
+
+                <!--                <header>-->
+                <!--                    <button name="action_bulk_send_to_eims"-->
+                <!--                            string="Send All to EIMS"-->
+                <!--                            type="object"-->
+                <!--                            class="oe_highlight"/>-->
+                <!--                </header>-->
+
+                <field name="move_id"/>
+                <field name="partner_id"/>
+                <field name="invoice_date"/>
+                <field name="amount_total"/>
+                <field name="currency_id"/>
+                <field name="state"/>
+                <field name="eims_irn"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_invoice_tree_eims_button" model="ir.ui.view">
+        <field name="name">account.invoice.tree.eims.button</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_bulk_send_to_eims"
+                        string="Send All to EIMS"
+                        type="object"
+                        class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_account_invoice_tree_eims_status" model="ir.ui.view">
+        <field name="name">account.invoice.list.eims.status</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add your field after the "move_sent_values" column -->
+            <xpath expr="//field[@name='move_sent_values']" position="after">
+                <field name="eims_status" string="EIMS Status" widget="badge"
+                       decoration-info="eims_status=='pending'"
+                       decoration-success="eims_status=='verified'"
+                       decoration-danger="eims_status=='error'"
+                       decoration-warning="eims_status=='cancelled'"
+                />
+
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

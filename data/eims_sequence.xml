@@ -1,0 +1,10 @@
+<odoo>
+    <record id="seq_eims_invoice_counter" model="ir.sequence">
+        <field name="name">EIMS Invoice Counter</field>
+        <field name="code">eims.invoice.counter</field>
+        <field name="padding">0</field> <!-- No leading zeros -->
+        <field name="implementation">standard</field>
+        <field name="number_increment">1</field>
+<!--        <field name="number_next">225</field>-->
+    </record>
+</odoo>

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_eims_receipt_document">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page" style="font-size: 10pt;">
+                    <t t-foreach="docs" t-as="doc">
+
+                        <div class="row">
+                            <div class="col-12 text-center" style="border: 2px solid black; padding: 5px;">
+                                <div class="row align-items-center">
+                                    <div class="col-4 text-left">
+                                        <t t-if="doc.company_id.logo">
+                                            <img t-att-src="image_data_uri(doc.company_id.logo)"
+                                                 style="max-height: 50px;"/>
+                                        </t>
+                                        <h5 class="mt-1" style="font-weight: bold; margin-bottom: 0;">
+                                            <t t-esc="doc.company_id.name"/>
+                                        </h5>
+                                        <p style="margin-bottom: 0;">N/A, 101</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5 style="font-weight: bold; margin-bottom: 0;">
+                                            የገንዘብ መቀበያ ደረሰኝ( Receipt Invoice)
+                                        </h5>
+                                        <h5 style="font-weight: bold; margin-top: 0;">
+                                            አይነት / Type Sales Receipts
+                                        </h5>
+                                    </div>
+                                    <div class="col-4 text-right">
+
+                                        <!--                                        <p class="mb-0">ቀን-->
+                                        <!--                                            <span t-esc="doc.ethiopian_invoice_date"/>-->
+                                        <!--                                        </p>-->
+                                        <p class="mb-0">
+                                            Date:
+                                            <span t-field="doc.invoice_date"
+                                                  t-options='{"widget": "date", "format": "yyyy-MM-dd"}'/>
+                                            G.C
+                                        </p>
+                                    </div>
+                                </div>
+                                <div style="border-top: 1px solid black; padding: 5px 0;">
+                                    <div class="row align-items-center ">
+                                        <div class="col-9 text-left ">
+                                            <span>
+                                                <strong>RRN:</strong>
+                                                <t t-if="doc.eims_receipt_rrn">
+                                                    <span t-esc="doc.eims_receipt_rrn"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span>N/A</span>
+                                                </t>
+                                            </span>
+                                            <br/>
+                                            <span>
+                                                <strong>MRC:</strong>
+                                                <t t-if="doc.eims_system_number">
+                                                    <span t-esc="doc.eims_system_number"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span>N/A</span>
+                                                </t>
+                                            </span>
+                                        </div>
+                                        <div class="col-3 text-right">
+                                            <t t-if="doc.eims_receipt_qr_code">
+                                                <img t-att-src="image_data_uri(doc.eims_receipt_qr_code)"
+                                                     style="width:200px; height:200px;"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3" style="border: 2px solid black;">
+                            <div class="col-6" style="border-right: 1px solid black; padding: 5px;">
+                                <h6 style="font-weight: bold; margin-bottom: 5px;">ከ / From
+                                    <t t-esc="doc.company_id.name"/>
+                                </h6>
+                                <strong>አድራሻ / Address:</strong>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="mb-1">
+                                            <strong>ከተማ / City:</strong>
+                                            <t t-esc="doc.eims_seller_city_code or doc.company_id.partner_id.city or 'N/A'"/>
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>ወረዳ / Woreda:</strong>
+                                            <t t-esc="doc.eims_seller_wereda or 'N/A'"/>
+                                        </p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="mb-1">
+                                            <strong>ዞን / ክ/ከተማ / Zone/Sub city:</strong>
+                                            <t t-esc="'N/A'"/>
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>ቀበሌ / Kebele:</strong>
+                                            <t t-esc="doc.eims_seller_locality or 'N/A'"/>
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>የቤ/ቁ H/No:</strong>
+                                            <t t-esc="doc.eims_seller_house_number or 'N/A'"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6" style="padding: 5px;">
+                                <h6 style="font-weight: bold; margin-bottom: 5px;">ለ / To
+                                    <t t-esc="doc.partner_id.name"/>
+                                </h6>
+                                <p class="mb-1">
+                                    <strong>አድራሻ / Address:</strong>
+                                    <!--                                    <span t-field="doc.partner_id.street or 'N/A'"/>-->
+                                </p>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="mb-1">
+                                            <strong>ከተማ / City:</strong>
+                                            <t t-esc="doc.eims_buyers_city_code or doc.partner_id.city or 'N/A'"/>
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>ዞን / ክ/ከተማ / Zone/Sub city:</strong>
+                                            <t t-esc="'N/A'"/>
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>ወረዳ / Woreda:</strong>
+                                            <t t-esc="doc.eims_buyers_wereda or doc.partner_id.zip or 'N/A'"/>
+                                        </p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="mb-1">
+                                            <strong>ቀበሌ / Kebele:</strong>
+                                            <t t-esc="'N/A'"/>
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>የቤ/ቁ H/No:</strong>
+                                            <t t-esc="'N/A'"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12" style="border-top: 1px solid black; padding: 5px;">
+                                <div class="row">
+                                    <div class="col-6" style="border-right: 1px solid black;">
+                                        <p class="mb-1">
+                                            <strong>የሻጭ ተ.እ.ታ ቁጥር / Seller's VAT Reg.No:</strong>
+                                            <!--                                        <span t-field="doc.company_id.eims_vat_number or 'N/A'"/>-->
+
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>የሻጭ የግብር ከፋይ መለያ ቁጥር / Seller's TIN:</strong>
+                                            <t t-esc="doc.eims_seller_tin or 'N/A'"/>
+                                        </p>
+
+                                        <p class="mb-1">
+                                            <strong>ንዑስ/ቁ Sub-TIN</strong>
+                                            <t t-esc="'N/A'"/>
+                                        </p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="mb-1">
+                                            <strong>የገዥ የግብር ከፋይ መለያ ቁጥር / Customer's TIN:</strong>
+                                            <t t-esc="doc.eims_buyers_tin or doc.partner_id.ref or 'N/A'"/>
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>የገዥ ተ.እ.ታ ቁጥር / Customer's VAT Reg. No:</strong>
+                                        </p>
+                                        <!--                                        <t t-esc="doc.partner_id.eims_vat_number or 'N/A'"/>-->
+                                        <p class="mb-1">
+                                            <strong>ንዑስ/ቁ / Sub-TIN:</strong>
+                                            <span t-esc="'N/A'"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm mt-3" style="border: 2px solid black;">
+                            <thead class="text-center" style="background-color: #f8f9fa;">
+                                <tr style="border-bottom: 2px solid black;">
+                                    <th style="width: 5%; border-right: 1px solid black;">T/ቁ<br/># / No.
+                                    </th>
+                                    <th style="width: 30%; border-right: 1px solid black;">የደረሰኝ ቁጥር /
+                                        <br/>
+                                        Invoice Doc. Number
+                                    </th>
+                                    <th style="width: 15%; border-right: 1px solid black;">የደረሰኝ ጠቅላላ/መጠን /
+                                        <br/>
+                                        Total Invoice Amount
+                                    </th>
+                                    <th style="width: 10%; border-right: 1px solid black;">የገንዘብ ዓይነት /<br/>Invoice
+                                        Currency
+                                    </th>
+                                    <th style="width: 15%; border-right: 1px solid black;">የቀረ መጠን /<br/>Remaining
+                                        Amount
+                                    </th>
+                                    <th style="width: 10%; border-right: 1px solid black;">የተሰጠ ቅናሽ /<br/>Discount Given
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="i" t-value="1"/>
+                                <t t-foreach="doc.invoice_line_ids.filtered(lambda l: l.display_type != 'line_section' and l.display_type != 'line_note')"
+                                   t-as="line">
+                                    <tr style="border-bottom: 1px dotted #ccc;">
+                                        <td class="text-center" style="border-right: 1px solid black;">
+                                            <t t-esc="i"/>
+                                        </td>
+                                        <td style="border-right: 1px solid black;">
+                                            <t t-esc="line.move_id.eims_document_number"/>
+                                        </td>
+                                        <td class="text-center" style="border-right: 1px solid black;">
+                                            <span t-field="line.move_id.amount_total"/>
+                                        </td>
+                                        <td class="text-right" style="border-right: 1px solid black;">
+                                            <span t-field="line.move_id.currency_id"/>
+                                        </td>
+                                        <!--                                        <td class="text-right" style="border-right: 1px solid black;">-->
+                                        <!--                                            <t t-if="line.price_unit">-->
+
+                                        <!--                                                <span t-field="line.price_unit"-->
+                                        <!--                                                      t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>-->
+                                        <!--                                            </t>-->
+                                        <!--                                            <t t-else="">-->
+                                        <!--                                                <span>0.00</span>-->
+                                        <!--                                            </t>-->
+                                        <!--                                        </td>-->
+                                        <td class="text-right" style="border-right: 1px solid black;">
+                                            <t t-if="discount_amount">
+                                                <span t-esc="discount_amount"
+                                                      t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                            </t>
+                                            <t t-else="">
+                                                <span>0.00</span>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <div class="row">
+                            <div class="col-7" style="border: 2px solid black; padding: 10px;">
+
+                                <p class="mt-2" style="font-weight: bold;">
+                                    ጠቅላላ ዋጋ በፊደል ብር / In Words Birr:
+                                    <span t-esc="doc.currency_id.with_context(lang=doc.partner_id.lang or 'en_US').amount_to_text(doc.amount_total)"/>
+                                </p>
+                                <div class="pagebreak"/>
+                                <p class="mb-1">
+                                    <strong>የክፍያ ሁኔታ : Mode of Payment:</strong>
+                                    CASH
+                                </p>
+                                <p class="mb-1">
+                                    <strong>አይነት : Type/Method:</strong>
+                                    <t t-esc="doc.journal_id.name or 'CASH'"/>
+                                </p>
+                                <p class="mb-1">
+                                    <strong>የተቀባይ ስምና ፊርማ / Receiver Name and Signature:</strong>
+                                    <t t-esc="doc.partner_id.name"/>
+                                </p>
+                            </div>
+
+                            <div class="col-5">
+                                <table class="table table-sm"
+                                       style="border: 2px solid black; border-left: none; margin-bottom: 0;">
+
+                                    <tr style="font-weight: bold; font-size: 1.1em; border-top: 2px solid black;">
+                                        <td>Total Invoice Amount (ETB) /ጠቅላላ የደረሰኝ መጠን (ብር)</td>
+
+                                        <td class="text-right">
+                                            <span t-field="doc.amount_total"
+                                                  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div class="pagebreak"/>
+                        <footer>
+
+
+                        </footer>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

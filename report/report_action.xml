@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_eims_invoice_replica_v2" model="ir.actions.report">
+            <field name="name">eims_test_connector_12.report_eims_invoice_document</field>
+            <field name="model">eims.registered.invoice</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">eims_test_connector_12.report_eims_invoice_document</field>
+            <field name="report_file">eims_test_connector_12.report_eims_invoice_document</field>
+
+            <!-- FIX: Use the correct ir.model reference -->
+            <field name="binding_model_id" ref="model_eims_registered_invoice"/>
+
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+    <data>
+        <record id="action_report_eims_receipt" model="ir.actions.report">
+            <field name="name">eims_test_connector_12.report_eims_receipt_document</field>
+            <field name="model">eims.receipt.log</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">eims_test_connector_12.report_eims_receipt_document</field>
+            <field name="report_file">eims_test_connector_12.report_eims_receipt_document</field>
+
+            <!-- FIX: Use the correct ir.model reference -->
+            <field name="binding_model_id" ref="model_eims_receipt_log"/>
+
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+    <data>
+        <record id="action_report_eims_wh_receipt" model="ir.actions.report">
+            <field name="name">eims_test_connector_12.report_eims_wh_receipt_document</field>
+            <field name="model">eims.withholding.receipt</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">eims_test_connector_12.report_eims_wh_receipt_document</field>
+            <field name="report_file">eims_test_connector_12.report_eims_wh_receipt_document</field>
+
+            <!-- FIX: Use the correct ir.model reference -->
+            <field name="binding_model_id" ref="model_eims_withholding_receipt"/>
+
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+
+</odoo>

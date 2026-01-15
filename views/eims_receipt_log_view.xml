@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- List view for EIMS Receipt Log -->
+    <record id="view_eims_receipt_log_list" model="ir.ui.view">
+        <field name="name">eims.receipt.log.list</field>
+        <field name="model">eims.receipt.log</field>
+        <field name="arch" type="xml">
+            <list string="EIMS Receipt Log">
+                <field name="move_id"/>
+                <field name="rrn"/>
+                <field name="status"/>
+                <field name="receipt_date"/>
+                <field name="amount_total"/>
+                <field name="currency_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view for EIMS Receipt Log -->
+    <record id="view_eims_receipt_log_form" model="ir.ui.view">
+        <field name="name">eims.receipt.log.form</field>
+        <field name="model">eims.receipt.log</field>
+        <field name="arch" type="xml">
+            <form string="EIMS Receipt Log">
+                <sheet>
+                     <header>
+                        <button name="action_print_eims_receipt"
+                                string="Print EIMS Receipt"
+                                type="object"
+                                class="btn-primary oe_highlight"
+                        />
+                    </header>
+                    <group>
+                        <field name="move_id"/>
+                        <field name="rrn"/>
+                        <field name="status"/>
+                        <field name="receipt_date"/>
+                        <field name="amount_total"/>
+                        <field name="currency_id"/>
+                        <field name="eims_receipt_qr_code"/>
+                        <field name="eims_response"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open the EIMS Receipt Log -->
+    <record id="action_eims_receipt_log" model="ir.actions.act_window">
+        <field name="name">EIMS Receipt Log</field>
+        <field name="res_model">eims.receipt.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

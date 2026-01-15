@@ -16,21 +16,6 @@
             </list>
         </field>
     </record>
-<!--    &lt;!&ndash; List view for EIMS Receipt Log &ndash;&gt;-->
-<!--    <record id="view_eims_receipt_log_list" model="ir.ui.view">-->
-<!--        <field name="name">eims.receipt.log.list</field>-->
-<!--        <field name="model">eims.receipt.log</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <list string="EIMS Receipt Log">-->
-<!--                <field name="move_id"/>-->
-<!--                <field name="rrn"/>-->
-<!--                <field name="status"/>-->
-<!--                <field name="receipt_date"/>-->
-<!--                <field name="amount_total"/>-->
-<!--                <field name="currency_id"/>-->
-<!--            </list>-->
-<!--        </field>-->
-<!--    </record>-->
 
     <!-- Form view for EIMS Receipt Log -->
     <record id="view_eims_receipt_log_form" model="ir.ui.view">

@@ -1,0 +1,12 @@
+[ req ]
+default_bits = 2048
+distinguished_name = req_distinguished_name
+prompt = no
+[ req_distinguished_name ]
+C = ET
+ST = AddisAbaba
+L = AddisAbaba
+O = Top System Solutions and Technology Plc
+OU = Top System Solutions and Technology Head Office
+CN = 0054835018
+serialNumber = 3142D2B84A	

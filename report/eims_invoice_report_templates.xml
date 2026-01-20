@@ -51,7 +51,7 @@
                                         <div class="col-9 text-left">
                                             <span>
                                                 <strong>IRN:</strong>
-                                                <t t-if="doc.`eims_irn`">
+                                                <t t-if="doc.eims_irn">
                                                     <span t-esc="doc.eims_irn"/>
                                                 </t>
                                                 <t t-else="">

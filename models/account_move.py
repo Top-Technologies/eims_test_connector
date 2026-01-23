@@ -1099,7 +1099,12 @@ class AccountMove(models.Model):
                     "eims_response": json.dumps(res_json, indent=2)
                 })
 
-                self.message_post(body=f"❌ Receipt creation failed: {json.dumps(res_json)}")
+                error_msg = f"❌ Receipt creation failed: {json.dumps(res_json)}"
+                self.message_post(body=error_msg)
+                
+                # NEW: Raise UserError so user sees it
+                body_msg = res_json.get('body') or res_json.get('message') or "Unknown Error"
+                raise UserError(f"Receipt Creation Failed!\nReason: {body_msg}")
 
         except Exception as e:
             self.eims_receipt_status = 'failed'

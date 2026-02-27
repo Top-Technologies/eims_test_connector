@@ -40,6 +40,8 @@ class EimsWithholdingReceipt(models.Model):
         [('draft', 'Draft'), ('verified', 'Verified'), ('submitted', 'Submitted'), ('error', 'Error')],
         default='draft', string="Status")
     eims_response = fields.Text(string="EIMS Response")
+    verification_response = fields.Text(string="Verification Response")
+    submission_response = fields.Text(string="Submission Response")
     create_date = fields.Datetime(string="Created On", readonly=True)
     verified_date = fields.Datetime(string="Verified On")
     submitted_date = fields.Datetime(string="Submitted On")
@@ -177,7 +179,7 @@ class EimsWithholdingReceipt(models.Model):
             token = self._get_token()
         except Exception as ex:
             self.status = 'error'
-            self.eims_response = json.dumps({"error": str(ex)})
+            self.verification_response = json.dumps({"error": str(ex)})
             _logger.error("EIMS token error: %s", ex)
             return False
 
@@ -191,7 +193,7 @@ class EimsWithholdingReceipt(models.Model):
             resp = http.post(url_verify, json=signed_payload, headers=headers, timeout=(5, 30))
             resp.raise_for_status()
             data = resp.json()
-            self.eims_response = json.dumps(data, default=str)
+            self.verification_response = json.dumps(data, default=str)
             if data.get('statusCode') == 200 or data.get('message') == 'SUCCESS':
                 body = data.get('body', {})
                 # populate useful fields
@@ -217,7 +219,7 @@ class EimsWithholdingReceipt(models.Model):
                 _logger.warning("[EIMS] verify returned non-200: %s", data)
         except Exception as ex:
             self.status = 'error'
-            self.eims_response = str(ex)
+            self.verification_response = str(ex)
             _logger.exception("Error calling EIMS verify: %s", ex)
         return True
 
@@ -260,7 +262,7 @@ class EimsWithholdingReceipt(models.Model):
             token = self._get_token()
         except Exception as ex:
             self.status = 'error'
-            self.eims_response = json.dumps({"error": str(ex)})
+            self.submission_response = json.dumps({"error": str(ex)})
             _logger.error("EIMS token error: %s", ex)
             return False
 
@@ -299,7 +301,7 @@ class EimsWithholdingReceipt(models.Model):
             resp = http.post(url_submit, json=signed_payload, headers=headers, timeout=(5, 30))
             resp.raise_for_status()
             data = resp.json()
-            self.eims_response = json.dumps(data, default=str)
+            self.submission_response = json.dumps(data, default=str)
             # Expected success shape may vary
             if data.get('statusCode') in (200, 201) or data.get('message') in ('SUCCESS', 'Accepted'):
                 # try to get RRN from response
@@ -324,7 +326,7 @@ class EimsWithholdingReceipt(models.Model):
                 _logger.warning("[EIMS] submit returned non-ok: %s", data)
         except Exception as ex:
             self.status = 'error'
-            self.eims_response = str(ex)
+            self.submission_response = str(ex)
             _logger.exception("Error submitting withholding to EIMS: %s", ex)
         return True
 

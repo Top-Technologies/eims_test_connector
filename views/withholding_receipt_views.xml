@@ -72,11 +72,18 @@
                     </group>
                     <group>
                         <field name="qr_code"/>
+                        <field name="rrn" readonly="1"/>
+                        <field name="status" readonly="1"/>
                     </group>
-                    <group>
-                        <field name="rrn"/>
-                        <field name="status"/>
-                        <field name="eims_response" widget="html" readonly="1" nolabel="1"/>
+                    <group string="EIMS Responses">
+                        <notebook>
+                            <page string="Verification Log">
+                                <field name="verification_response" widget="text" class="o_text_overflow" readonly="1"/>
+                            </page>
+                            <page string="Submission Log">
+                                <field name="submission_response" widget="text" class="o_text_overflow" readonly="1"/>
+                            </page>
+                        </notebook>
                     </group>
                 </sheet>
 
